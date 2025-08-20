@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Add this line to check the value
-// console.log("Loaded MONGO_URI:", process.env.MONGODB_URI); 
+//console.log("Loaded MONGO_URI:", process.env.MONGODB_URI); 
 
 const MONGO_URI = process.env.MONGODB_URI as string;
 
