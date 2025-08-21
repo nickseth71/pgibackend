@@ -7,7 +7,8 @@
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --exec ts-node-esm server.ts",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "stage": "tsc && git status && git add ."
   },
   "keywords": [],
   "author": "",
@@ -35,7 +36,6 @@
     "ts-node": "^10.9.2"
   },
   "dependencies": {
-    "typescript": "^5.9.2",
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -54,6 +54,7 @@
     "passport-jwt": "^4.0.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
+    "typescript": "^5.9.2",
     "uuid": "^11.1.0"
   }
 }
