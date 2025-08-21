@@ -1,4 +1,4 @@
-import Equipment from "../models/equipment.ts";
+import Equipment from "../models/equipment.js";
 class EquipmentService {
     async createEquipment(equipmentData) {
         const equipment = new Equipment(equipmentData);

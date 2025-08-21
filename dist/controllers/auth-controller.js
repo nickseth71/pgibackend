@@ -1,8 +1,8 @@
-import asyncHandler from "../middlewares/async-handler.ts";
-import { sendTokenResponse } from "../utils/token-utils.ts";
-import AuthService from "../services/auth-service.ts";
-import ErrorResponse from "../utils/error-response.ts";
-import { sendOTPEmail } from "../utils/email-service.ts";
+import asyncHandler from "../middlewares/async-handler.js";
+import { sendTokenResponse } from "../utils/token-utils.js";
+import AuthService from "../services/auth-service.js";
+import ErrorResponse from "../utils/error-response.js";
+import { sendOTPEmail } from "../utils/email-service.js";
 class AuthController {
     constructor() {
         this.register = asyncHandler(async (req, res, next) => {

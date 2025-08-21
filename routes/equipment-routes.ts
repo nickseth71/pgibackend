@@ -1,9 +1,9 @@
 import { Router } from "express"
-import EquipmentController from "../controllers/equipment-controller.ts"
+import EquipmentController from "../controllers/equipment-controller.js"
 
-import { protect, authorize } from "../middlewares/auth-middleware.ts"
-import validate from "../middlewares/validate.ts"
-import { equipmentValidation } from "../validations/equipment-validation.ts"
+import { protect, authorize } from "../middlewares/auth-middleware.js"
+import validate from "../middlewares/validate.js"
+import { equipmentValidation } from "../validations/equipment-validation.js"
 
 const router = Router()
 

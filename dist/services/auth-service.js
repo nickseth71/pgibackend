@@ -1,5 +1,5 @@
-import User from "../models/user.ts";
-import ErrorResponse from "../utils/error-response.ts";
+import User from "../models/user.js";
+import ErrorResponse from "../utils/error-response.js";
 class AuthService {
     async registerUser(name, email, password, role) {
         const existingUser = await User.findOne({ email });

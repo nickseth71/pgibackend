@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose"
 import bcrypt from "bcryptjs"
 import crypto from "crypto"
-import type { UserModel } from "../interfaces/user-type.ts"
+import type { UserModel } from "../interfaces/user-type.js"
 
 const UserSchema: Schema = new Schema({
   name: {

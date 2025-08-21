@@ -1,8 +1,8 @@
 import { Router } from "express"
-import AuthController from "../controllers/auth-controller.ts"
-import validate from "../middlewares/validate.ts"
-import { authValidation } from "../validations/auth-validation.ts"
-import { protect } from "../middlewares/auth-middleware.ts"
+import AuthController from "../controllers/auth-controller.js"
+import validate from "../middlewares/validate.js"
+import { authValidation } from "../validations/auth-validation.js"
+import { protect } from "../middlewares/auth-middleware.js"
 
 const router = Router()
 

@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
-import type { UserModel } from '../interfaces/user-type.ts';
-import type { EquipmentModel } from '../interfaces/equipment-type.ts';
+import type { UserModel } from '../interfaces/user-type.js';
+import type { EquipmentModel } from '../interfaces/equipment-type.js';
 
 
 export interface User extends UserModel {}

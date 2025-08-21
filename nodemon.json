@@ -1,0 +1,9 @@
+{
+  "watch": ["**/*.ts"],
+  "ext": "ts,js,json",
+  "ignore": ["dist/**/*", "node_modules/**/*"],
+  "exec": "node --loader ts-node/esm server.ts",
+  "env": {
+    "NODE_OPTIONS": "--experimental-specifier-resolution=node"
+  }
+}

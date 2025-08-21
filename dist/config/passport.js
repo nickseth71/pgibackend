@@ -1,6 +1,6 @@
 import passport from "passport";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
-import User from "../models/user.ts";
+import User from "../models/user.js";
 import { config } from "dotenv";
 config();
 const jwtSecret = process.env.JWT_SECRET;

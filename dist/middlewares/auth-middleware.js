@@ -1,7 +1,7 @@
-import ErrorResponse from "../utils/error-response.ts";
-import asyncHandler from "./async-handler.ts";
+import ErrorResponse from "../utils/error-response.js";
+import asyncHandler from "./async-handler.js";
 import jwt from "jsonwebtoken";
-import User from "../models/user.ts";
+import User from "../models/user.js";
 import dotenv from "dotenv";
 dotenv.config();
 export const protect = asyncHandler(async (req, res, next) => {

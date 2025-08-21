@@ -1,9 +1,9 @@
 import type { Request, Response } from "express"
-import EquipmentService from "../services/equipment-service.ts"
-import type { PaginationOptions } from "../interfaces/pagination.ts"
+import EquipmentService from "../services/equipment-service.js"
+import type { PaginationOptions } from "../interfaces/pagination.js"
 import httpStatus from "http-status"
-import ErrorResponse from "../utils/error-response.ts"
-import asyncHandler from "../middlewares/async-handler.ts"
+import ErrorResponse from "../utils/error-response.js"
+import asyncHandler from "../middlewares/async-handler.js"
 
 class EquipmentController {
   createEquipment = asyncHandler(async (req: Request, res: Response) => {

@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken"
 import type { Response } from "express"
-import type { UserModel } from "../interfaces/user-type.ts"
+import type { UserModel } from "../interfaces/user-type.js"
 import dotenv from "dotenv"
 
 dotenv.config()

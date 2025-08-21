@@ -1,7 +1,7 @@
-import EquipmentService from "../services/equipment-service.ts";
+import EquipmentService from "../services/equipment-service.js";
 import httpStatus from "http-status";
-import ErrorResponse from "../utils/error-response.ts";
-import asyncHandler from "../middlewares/async-handler.ts";
+import ErrorResponse from "../utils/error-response.js";
+import asyncHandler from "../middlewares/async-handler.js";
 class EquipmentController {
     constructor() {
         this.createEquipment = asyncHandler(async (req, res) => {

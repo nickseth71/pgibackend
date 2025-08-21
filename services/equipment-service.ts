@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
-import Equipment from "../models/equipment.ts"
-import type { PaginationOptions } from "../interfaces/pagination.ts"
-import type { EquipmentModel } from "../interfaces/equipment-type.ts"
+import Equipment from "../models/equipment.js"
+import type { PaginationOptions } from "../interfaces/pagination.js"
+import type { EquipmentModel } from "../interfaces/equipment-type.js"
 
 class EquipmentService {
   async createEquipment(

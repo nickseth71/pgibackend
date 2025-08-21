@@ -2,13 +2,14 @@
   "name": "pgi-equi",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/server.js",
   "scripts": {
     "build": "tsc",
+    "clean": "rm -rf dist",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --exec ts-node-esm server.ts",
+    "dev": "nodemon --exec \"node --loader ts-node/esm\" server.ts",
     "start": "node dist/server.js",
-    "stage": "tsc && git status && git add ."
+    "stage": "npm run build && git status && git add ."
   },
   "keywords": [],
   "author": "",

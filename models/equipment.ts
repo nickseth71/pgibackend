@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose"
-import type { EquipmentModel } from "../interfaces/equipment-type.ts"
+import type { EquipmentModel } from "../interfaces/equipment-type.js"
 
 const EquipmentSchema: Schema = new Schema(
   {
