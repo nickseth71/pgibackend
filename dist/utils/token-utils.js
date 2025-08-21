@@ -7,12 +7,12 @@ export const generateToken = (userId) => {
     if (!secret) {
         throw new Error("JWT_SECRET is not defined");
     }
-    return jwt.sign({ _id: userId }, secret, {
+    return jwt.sign({ id: userId }, secret, {
         expiresIn: expiresIn || "1d",
     });
 };
 export const sendTokenResponse = (user, statusCode, res) => {
-    const token = generateToken(user._id);
+    const token = generateToken(user.id);
     const options = {
         expires: new Date(Date.now() +
             parseInt(process.env.JWT_COOKIE_EXPIRE) * 24 * 60 * 60 * 1000),

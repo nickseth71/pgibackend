@@ -2,12 +2,34 @@ import User from "../models/user.js";
 import ErrorResponse from "../utils/error-response.js";
 class AuthService {
     async registerUser(name, email, password, role) {
-        const existingUser = await User.findOne({ email });
+        const sanitizedEmail = email.trim().toLowerCase();
+        const existingUser = await User.findOne({
+            email: sanitizedEmail,
+            role: role
+        });
         if (existingUser) {
-            throw new ErrorResponse("User already exists", 400);
+            throw new ErrorResponse(`An account with email ${sanitizedEmail} and role ${role} already exists.`, 400);
         }
-        const user = await User.create({ name, email, password, role });
-        return user;
+        const userData = {
+            name,
+            email: sanitizedEmail,
+            password,
+            role
+        };
+        try {
+            const user = await User.create(userData);
+            return user;
+        }
+        catch (error) {
+            console.error('User registration error:', error);
+            if (error.code === 11000) {
+                const keyValue = error.keyValue;
+                const duplicateField = Object.keys(keyValue)[0];
+                const duplicateValue = keyValue[duplicateField];
+                throw new ErrorResponse(`Duplicate value for ${duplicateField}: ${duplicateValue}`, 400);
+            }
+            throw error;
+        }
     }
     async loginUser(email, password) {
         const user = await User.findOne({ email }).select("+password");
@@ -21,7 +43,7 @@ class AuthService {
         return user;
     }
     async getCurrentUser(userId) {
-        const user = await User.findById(userId);
+        const user = await User.findOne({ id: userId });
         if (!user) {
             throw new ErrorResponse("User not found", 404);
         }
@@ -37,14 +59,17 @@ class AuthService {
         if (fieldsToUpdate.name) {
             fields.name = fieldsToUpdate.name;
         }
-        const user = await User.findByIdAndUpdate(userId, fields, {
+        const user = await User.findOneAndUpdate({ id: userId }, fields, {
             new: true,
             runValidators: true,
         });
+        if (!user) {
+            throw new ErrorResponse("User not found", 404);
+        }
         return user;
     }
     async generateOTP(userId) {
-        const user = await User.findById(userId);
+        const user = await User.findOne({ id: userId });
         if (!user)
             throw new ErrorResponse("User not found", 404);
         user.generateOTP();
@@ -55,7 +80,7 @@ class AuthService {
         const user = await User.findOne({ email });
         if (!user)
             throw new ErrorResponse("User not found", 404);
-        return this.generateOTP(user._id);
+        return this.generateOTP(user.id);
     }
     async verifyOTPAndUpdatePassword(email, otp, password) {
         const user = await User.findOne({

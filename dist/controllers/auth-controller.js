@@ -23,14 +23,14 @@ class AuthController {
             res.status(200).json({ success: true, data: { message: "Successfully logged out" } });
         });
         this.getMe = asyncHandler(async (req, res, next) => {
-            const user = await AuthService.getCurrentUser(req.user?._id);
+            const user = await AuthService.getCurrentUser(req.user?.id);
             res.status(200).json({ success: true, data: user });
         });
         this.updateDetails = asyncHandler(async (req, res, next) => {
             if (!req.user) {
                 return next(new ErrorResponse("Not authorized", 401));
             }
-            const updatedUser = await AuthService.updateUserDetails(req.user?._id, req.body);
+            const updatedUser = await AuthService.updateUserDetails(req.user?.id, req.body);
             res.status(200).json({ success: true, data: updatedUser });
         });
         this.requestOTP = asyncHandler(async (req, res, next) => {

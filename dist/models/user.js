@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
+import { v4 as uuidv4 } from "uuid";
 const UserSchema = new Schema({
     name: {
         type: String,
@@ -9,7 +10,8 @@ const UserSchema = new Schema({
     email: {
         type: String,
         required: [true, "Please add an email"],
-        unique: true,
+        trim: true,
+        lowercase: true,
         match: [
             /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
             "Please add a valid email",
@@ -57,15 +59,23 @@ UserSchema.methods.generateOTP = function () {
     this.otpExpire = Date.now() + 10 * 60 * 1000;
     return this.otp;
 };
-UserSchema.virtual('id').get(function () {
-    return this._id.toString();
-});
-UserSchema.set('toJSON', {
-    virtuals: true,
+UserSchema.set("toJSON", {
+    virtuals: false,
+    versionKey: false,
     transform: function (doc, ret) {
         delete ret._id;
         delete ret.__v;
-    }
+        delete ret.password;
+    },
 });
+UserSchema.add({
+    id: {
+        type: String,
+        default: () => uuidv4(),
+        required: true,
+        unique: true,
+    },
+});
+UserSchema.index({ email: 1, role: 1 }, { unique: true });
 export default mongoose.model("User", UserSchema);
 //# sourceMappingURL=user.js.map

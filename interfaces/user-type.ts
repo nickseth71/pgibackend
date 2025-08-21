@@ -1,7 +1,7 @@
 import { Document } from "mongoose"
 
 export interface UserModel extends Document {
-  _id: string
+  id: string
   name: string
   email: string
   password: string
@@ -15,5 +15,4 @@ export interface UserModel extends Document {
   generateOTPByEmail(email: string): Promise<UserModel>
   sendOTPEmail(email: string, otp: string): Promise<void>
   verifyOTP(otp: string): Promise<boolean>
-
 }

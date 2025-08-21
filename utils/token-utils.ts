@@ -5,7 +5,6 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
-
 const secret = process.env.JWT_SECRET
 const expiresIn = process.env.JWT_EXPIRE
 
@@ -13,9 +12,9 @@ export const generateToken = (userId: string) => {
   if (!secret) {
     throw new Error("JWT_SECRET is not defined")
   }
-  return jwt.sign({ _id: userId }, secret, {
+  return jwt.sign({ id: userId }, secret, {
     expiresIn: expiresIn || "1d",
-  } as jwt.SignOptions);
+  } as jwt.SignOptions)
 }
 
 export const sendTokenResponse = (
@@ -23,7 +22,7 @@ export const sendTokenResponse = (
   statusCode: number,
   res: Response
 ) => {
-  const token = generateToken(user._id)
+  const token = generateToken(user.id)
 
   const options = {
     expires: new Date(
