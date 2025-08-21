@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 class ErrorResponse extends Error {
     constructor(message, statusCode) {
         super(message);
@@ -7,5 +5,5 @@ class ErrorResponse extends Error {
         Error.captureStackTrace(this, this.constructor);
     }
 }
-exports.default = ErrorResponse;
+export default ErrorResponse;
 //# sourceMappingURL=error-response.js.map

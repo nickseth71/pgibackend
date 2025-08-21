@@ -1,27 +1,22 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const equipment_controller_ts_1 = __importDefault(require("../controllers/equipment-controller.ts"));
-const auth_middleware_ts_1 = require("../middlewares/auth-middleware.ts");
-const validate_ts_1 = __importDefault(require("../middlewares/validate.ts"));
-const equipment_validation_ts_1 = require("../validations/equipment-validation.ts");
-const router = (0, express_1.Router)();
-router.use(auth_middleware_ts_1.protect);
+import { Router } from "express";
+import EquipmentController from "../controllers/equipment-controller.ts";
+import { protect, authorize } from "../middlewares/auth-middleware.ts";
+import validate from "../middlewares/validate.ts";
+import { equipmentValidation } from "../validations/equipment-validation.ts";
+const router = Router();
+router.use(protect);
 router
     .route("/")
-    .post((0, auth_middleware_ts_1.authorize)("admin", "technician"), (0, validate_ts_1.default)(equipment_validation_ts_1.equipmentValidation.createEquipment), equipment_controller_ts_1.default.createEquipment)
-    .get(equipment_controller_ts_1.default.getAllEquipment);
+    .post(authorize("admin", "technician"), validate(equipmentValidation.createEquipment), EquipmentController.createEquipment)
+    .get(EquipmentController.getAllEquipment);
 router
     .route("/:id")
-    .get(equipment_controller_ts_1.default.getEquipment)
-    .put((0, auth_middleware_ts_1.authorize)("admin", "technician"), (0, validate_ts_1.default)(equipment_validation_ts_1.equipmentValidation.updateEquipment), equipment_controller_ts_1.default.updateEquipment)
-    .delete((0, auth_middleware_ts_1.authorize)("admin"), equipment_controller_ts_1.default.deleteEquipment);
-router.route("/status/:status").get(equipment_controller_ts_1.default.getEquipmentByStatus);
+    .get(EquipmentController.getEquipment)
+    .put(authorize("admin", "technician"), validate(equipmentValidation.updateEquipment), EquipmentController.updateEquipment)
+    .delete(authorize("admin"), EquipmentController.deleteEquipment);
+router.route("/status/:status").get(EquipmentController.getEquipmentByStatus);
 router
     .route("/maintenance/due")
-    .get((0, auth_middleware_ts_1.authorize)("admin", "technician"), equipment_controller_ts_1.default.getEquipmentDueForMaintenance);
-exports.default = router;
+    .get(authorize("admin", "technician"), EquipmentController.getEquipmentDueForMaintenance);
+export default router;
 //# sourceMappingURL=equipment-routes.js.map

@@ -1,45 +1,40 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const equipment_ts_1 = __importDefault(require("../models/equipment.ts"));
+import Equipment from "../models/equipment.ts";
 class EquipmentService {
     async createEquipment(equipmentData) {
-        const equipment = new equipment_ts_1.default(equipmentData);
+        const equipment = new Equipment(equipmentData);
         return await equipment.save();
     }
     async getEquipmentById(id) {
-        return equipment_ts_1.default.findById(id);
+        return Equipment.findById(id);
     }
     async getAllEquipment(filter = {}, paginationOptions) {
         const { page = 1, limit = 10, sort = "-createdAt", } = paginationOptions || {};
         const skip = (page - 1) * limit;
         const [data, total] = await Promise.all([
-            equipment_ts_1.default.find(filter).sort(sort).skip(skip).limit(limit).exec(),
-            equipment_ts_1.default.countDocuments(filter),
+            Equipment.find(filter).sort(sort).skip(skip).limit(limit).exec(),
+            Equipment.countDocuments(filter),
         ]);
         return { data, total };
     }
     async updateEquipment(id, updateData) {
-        return equipment_ts_1.default.findByIdAndUpdate(id, updateData, {
+        return Equipment.findByIdAndUpdate(id, updateData, {
             new: true,
             runValidators: true,
         });
     }
     async deleteEquipment(id) {
-        return equipment_ts_1.default.findByIdAndDelete(id);
+        return Equipment.findByIdAndDelete(id);
     }
     async getEquipmentByStatus(status) {
-        return equipment_ts_1.default.find({ status });
+        return Equipment.find({ status });
     }
     async getEquipmentDueForMaintenance() {
         const today = new Date();
-        return equipment_ts_1.default.find({
+        return Equipment.find({
             maintenanceExpiry: { $lte: today },
             status: { $ne: "Non-Functional" },
         });
     }
 }
-exports.default = new EquipmentService();
+export default new EquipmentService();
 //# sourceMappingURL=equipment-service.js.map

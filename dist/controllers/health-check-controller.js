@@ -1,9 +1,4 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = __importDefault(require("mongoose"));
+import mongoose from "mongoose";
 class HealthCheckController {
     static async checkHealth(req, res) {
         res.status(200).json({
@@ -15,7 +10,7 @@ class HealthCheckController {
     }
     static async checkDbHealth(req, res) {
         try {
-            const db = mongoose_1.default.connection.db;
+            const db = mongoose.connection.db;
             if (!db) {
                 return res.status(503).json({
                     database: "DOWN",
@@ -36,5 +31,5 @@ class HealthCheckController {
         }
     }
 }
-exports.default = HealthCheckController;
+export default HealthCheckController;
 //# sourceMappingURL=health-check-controller.js.map

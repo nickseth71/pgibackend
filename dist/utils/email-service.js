@@ -1,20 +1,14 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendOTPEmail = void 0;
-const nodemailer_1 = __importDefault(require("nodemailer"));
-const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
-const transporter = nodemailer_1.default.createTransport({
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+dotenv.config();
+const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASSWORD
     }
 });
-const sendOTPEmail = async (email, otp) => {
+export const sendOTPEmail = async (email, otp) => {
     if (!email || !otp) {
         throw new Error('Email and OTP are required');
     }
@@ -26,5 +20,4 @@ const sendOTPEmail = async (email, otp) => {
     };
     await transporter.sendMail(mailOptions);
 };
-exports.sendOTPEmail = sendOTPEmail;
 //# sourceMappingURL=email-service.js.map

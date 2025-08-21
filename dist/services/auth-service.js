@@ -1,34 +1,29 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const user_ts_1 = __importDefault(require("../models/user.ts"));
-const error_response_ts_1 = __importDefault(require("../utils/error-response.ts"));
+import User from "../models/user.ts";
+import ErrorResponse from "../utils/error-response.ts";
 class AuthService {
     async registerUser(name, email, password, role) {
-        const existingUser = await user_ts_1.default.findOne({ email });
+        const existingUser = await User.findOne({ email });
         if (existingUser) {
-            throw new error_response_ts_1.default("User already exists", 400);
+            throw new ErrorResponse("User already exists", 400);
         }
-        const user = await user_ts_1.default.create({ name, email, password, role });
+        const user = await User.create({ name, email, password, role });
         return user;
     }
     async loginUser(email, password) {
-        const user = await user_ts_1.default.findOne({ email }).select("+password");
+        const user = await User.findOne({ email }).select("+password");
         if (!user) {
-            throw new error_response_ts_1.default("Invalid credentials", 401);
+            throw new ErrorResponse("Invalid credentials", 401);
         }
         const isMatch = await user.matchPassword(password);
         if (!isMatch) {
-            throw new error_response_ts_1.default("Invalid credentials", 401);
+            throw new ErrorResponse("Invalid credentials", 401);
         }
         return user;
     }
     async getCurrentUser(userId) {
-        const user = await user_ts_1.default.findById(userId);
+        const user = await User.findById(userId);
         if (!user) {
-            throw new error_response_ts_1.default("User not found", 404);
+            throw new ErrorResponse("User not found", 404);
         }
         return user;
     }
@@ -42,34 +37,34 @@ class AuthService {
         if (fieldsToUpdate.name) {
             fields.name = fieldsToUpdate.name;
         }
-        const user = await user_ts_1.default.findByIdAndUpdate(userId, fields, {
+        const user = await User.findByIdAndUpdate(userId, fields, {
             new: true,
             runValidators: true,
         });
         return user;
     }
     async generateOTP(userId) {
-        const user = await user_ts_1.default.findById(userId);
+        const user = await User.findById(userId);
         if (!user)
-            throw new error_response_ts_1.default("User not found", 404);
+            throw new ErrorResponse("User not found", 404);
         user.generateOTP();
         await user.save();
         return user;
     }
     async generateOTPByEmail(email) {
-        const user = await user_ts_1.default.findOne({ email });
+        const user = await User.findOne({ email });
         if (!user)
-            throw new error_response_ts_1.default("User not found", 404);
+            throw new ErrorResponse("User not found", 404);
         return this.generateOTP(user._id);
     }
     async verifyOTPAndUpdatePassword(email, otp, password) {
-        const user = await user_ts_1.default.findOne({
+        const user = await User.findOne({
             email,
             otp,
             otpExpire: { $gt: Date.now() },
         });
         if (!user)
-            throw new error_response_ts_1.default("Invalid or expired OTP", 400);
+            throw new ErrorResponse("Invalid or expired OTP", 400);
         user.password = password;
         user.otp = undefined;
         user.otpExpire = undefined;
@@ -77,13 +72,13 @@ class AuthService {
         return user;
     }
     async verifyOTPAndUpdateEmail(email, otp, newEmail) {
-        const user = await user_ts_1.default.findOne({
+        const user = await User.findOne({
             email: email,
             otp,
             otpExpire: { $gt: Date.now() },
         });
         if (!user)
-            throw new error_response_ts_1.default("Invalid or expired OTP", 400);
+            throw new ErrorResponse("Invalid or expired OTP", 400);
         user.email = newEmail;
         user.otp = undefined;
         user.otpExpire = undefined;
@@ -91,5 +86,5 @@ class AuthService {
         return user;
     }
 }
-exports.default = new AuthService();
+export default new AuthService();
 //# sourceMappingURL=auth-service.js.map
