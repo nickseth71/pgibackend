@@ -69,7 +69,7 @@ class AuthService {
         return user;
     }
     async generateOTP(userId) {
-        const user = await User.findOne({ id: userId });
+        const user = await User.findOne({ userId: userId });
         if (!user)
             throw new ErrorResponse("User not found", 404);
         user.generateOTP();

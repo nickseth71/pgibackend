@@ -43,7 +43,6 @@ const UserSchema = new Schema({
         transform: (_doc, ret) => {
             delete ret.__v;
             delete ret._id;
-            delete ret.userId;
             return ret;
         },
     },
