@@ -1,12 +1,13 @@
 import { Document } from "mongoose"
 
 export interface UserModel extends Document {
-  id: string
+  userId: string
   name: string
   email: string
   password: string
   role: string
-  createdAt: Date
+  createdAt: String
+  updatedAt: String
   otp: string
   otpExpire: Date
   matchPassword(password: string): Promise<boolean>

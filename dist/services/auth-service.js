@@ -5,7 +5,7 @@ class AuthService {
         const sanitizedEmail = email.trim().toLowerCase();
         const existingUser = await User.findOne({
             email: sanitizedEmail,
-            role: role
+            role: role,
         });
         if (existingUser) {
             throw new ErrorResponse(`An account with email ${sanitizedEmail} and role ${role} already exists.`, 400);
@@ -14,14 +14,14 @@ class AuthService {
             name,
             email: sanitizedEmail,
             password,
-            role
+            role,
         };
         try {
             const user = await User.create(userData);
             return user;
         }
         catch (error) {
-            console.error('User registration error:', error);
+            console.error("User registration error:", error);
             if (error.code === 11000) {
                 const keyValue = error.keyValue;
                 const duplicateField = Object.keys(keyValue)[0];
@@ -43,7 +43,7 @@ class AuthService {
         return user;
     }
     async getCurrentUser(userId) {
-        const user = await User.findOne({ id: userId });
+        const user = await User.findOne({ userId: userId });
         if (!user) {
             throw new ErrorResponse("User not found", 404);
         }
@@ -59,7 +59,7 @@ class AuthService {
         if (fieldsToUpdate.name) {
             fields.name = fieldsToUpdate.name;
         }
-        const user = await User.findOneAndUpdate({ id: userId }, fields, {
+        const user = await User.findOneAndUpdate({ userId: userId }, fields, {
             new: true,
             runValidators: true,
         });
@@ -80,7 +80,7 @@ class AuthService {
         const user = await User.findOne({ email });
         if (!user)
             throw new ErrorResponse("User not found", 404);
-        return this.generateOTP(user.id);
+        return this.generateOTP(user.userId);
     }
     async verifyOTPAndUpdatePassword(email, otp, password) {
         const user = await User.findOne({

@@ -1,16 +1,18 @@
 export interface EquipmentModel {
-  name: string
+  id: string
+  equipmentName: string
   modelName: string
   procurementYear: string
-  installationDate: Date
+  installationDate: string
   status: string
   maintenanceType: string
-  maintenanceExpiry?: Date
+  maintenanceExpiry?: string
   inchargeName: string
   contactInfo: {
+    name?: string
     phone?: string
     email?: string
   }
-  createdAt: Date
-  updatedAt: Date
+  createdAt: string
+  updatedAt: string | null
 }

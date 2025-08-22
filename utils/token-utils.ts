@@ -12,7 +12,7 @@ export const generateToken = (userId: string) => {
   if (!secret) {
     throw new Error("JWT_SECRET is not defined")
   }
-  return jwt.sign({ id: userId }, secret, {
+  return jwt.sign({ userId }, secret, {
     expiresIn: expiresIn || "1d",
   } as jwt.SignOptions)
 }
@@ -22,7 +22,7 @@ export const sendTokenResponse = (
   statusCode: number,
   res: Response
 ) => {
-  const token = generateToken(user.id)
+  const token = generateToken(user.userId)
 
   const options = {
     expires: new Date(

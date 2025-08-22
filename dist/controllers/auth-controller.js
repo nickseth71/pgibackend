@@ -20,18 +20,22 @@ class AuthController {
                 expires: new Date(Date.now() + 10 * 1000),
                 httpOnly: true,
             });
-            res.status(200).json({ success: true, data: { message: "Successfully logged out" } });
+            res
+                .status(200)
+                .json({ success: true, data: { message: "Successfully logged out" } });
         });
         this.getMe = asyncHandler(async (req, res, next) => {
-            const user = await AuthService.getCurrentUser(req.user?.id);
-            res.status(200).json({ success: true, data: user });
+            const user = await AuthService.getCurrentUser(req.user?.userId);
+            const { _id, __v, ...userData } = user.toObject();
+            res.status(200).json({ success: true, data: userData });
         });
         this.updateDetails = asyncHandler(async (req, res, next) => {
             if (!req.user) {
                 return next(new ErrorResponse("Not authorized", 401));
             }
-            const updatedUser = await AuthService.updateUserDetails(req.user?.id, req.body);
-            res.status(200).json({ success: true, data: updatedUser });
+            const updatedUser = await AuthService.updateUserDetails(req.user?.userId, req.body);
+            const { _id, __v, ...updatedUserData } = updatedUser.toObject();
+            res.status(200).json({ success: true, data: updatedUserData });
         });
         this.requestOTP = asyncHandler(async (req, res, next) => {
             if (!req.body || !req.body.email) {

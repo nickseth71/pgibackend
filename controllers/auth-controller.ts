@@ -7,22 +7,22 @@ import ErrorResponse from "../utils/error-response.js"
 import { sendOTPEmail } from "../utils/email-service.js"
 
 class AuthController {
-/**
- * @swagger
- * /api/v1/auth/register:
- *   post:
- *     summary: Register a new user
- *     tags: [Auth]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/User'
- *     responses:
- *       200:
- *         description: User registered successfully
- */
+  /**
+   * @swagger
+   * /api/v1/auth/register:
+   *   post:
+   *     summary: Register a new user
+   *     tags: [Auth]
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/User'
+   *     responses:
+   *       200:
+   *         description: User registered successfully
+   */
   register = asyncHandler(
     async (req: ExpressRequest, res: ExpressResponse, next: NextFunction) => {
       const { name, email, password, role } = req.body
@@ -45,14 +45,17 @@ class AuthController {
         expires: new Date(Date.now() + 10 * 1000),
         httpOnly: true,
       })
-      res.status(200).json({ success: true, data: { message: "Successfully logged out" }})
+      res
+        .status(200)
+        .json({ success: true, data: { message: "Successfully logged out" } })
     }
   )
 
   getMe = asyncHandler(
     async (req: ExpressRequest, res: ExpressResponse, next: NextFunction) => {
-      const user = await AuthService.getCurrentUser(req.user?.id)
-      res.status(200).json({ success: true, data: user })
+      const user = await AuthService.getCurrentUser(req.user?.userId)
+      const { _id, __v, ...userData } = user.toObject()
+      res.status(200).json({ success: true, data: userData })
     }
   )
 
@@ -62,10 +65,11 @@ class AuthController {
         return next(new ErrorResponse("Not authorized", 401))
       }
       const updatedUser = await AuthService.updateUserDetails(
-        req.user?.id,
+        req.user?.userId,
         req.body
       )
-      res.status(200).json({ success: true, data: updatedUser })
+      const { _id, __v, ...updatedUserData } = updatedUser.toObject()
+      res.status(200).json({ success: true, data: updatedUserData })
     }
   )
 

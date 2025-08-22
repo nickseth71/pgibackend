@@ -5,7 +5,7 @@ class EquipmentService {
         return await equipment.save();
     }
     async getEquipmentById(id) {
-        return Equipment.findById(id);
+        return Equipment.findOne({ id });
     }
     async getAllEquipment(filter = {}, paginationOptions) {
         const { page = 1, limit = 10, sort = "-createdAt", } = paginationOptions || {};
@@ -17,13 +17,13 @@ class EquipmentService {
         return { data, total };
     }
     async updateEquipment(id, updateData) {
-        return Equipment.findByIdAndUpdate(id, updateData, {
+        return Equipment.findOneAndUpdate({ id }, updateData, {
             new: true,
             runValidators: true,
         });
     }
     async deleteEquipment(id) {
-        return Equipment.findByIdAndDelete(id);
+        return Equipment.findOneAndDelete({ id });
     }
     async getEquipmentByStatus(status) {
         return Equipment.find({ status });

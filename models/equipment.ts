@@ -1,9 +1,16 @@
 import mongoose, { Schema } from "mongoose"
 import type { EquipmentModel } from "../interfaces/equipment-type.js"
+import { v4 as uuidv4 } from "uuid"
 
 const EquipmentSchema: Schema = new Schema(
   {
-    name: {
+    id: {
+      type: String,
+      default: () => uuidv4(),
+      required: true,
+      unique: true,
+    },
+    equipmentName: {
       type: String,
       required: [true, "Please add equipment name"],
     },
@@ -16,7 +23,7 @@ const EquipmentSchema: Schema = new Schema(
       required: [true, "Please add procurement year"],
     },
     installationDate: {
-      type: Date,
+      type: String,
       required: [true, "Please add installation date"],
     },
     status: {
@@ -27,6 +34,7 @@ const EquipmentSchema: Schema = new Schema(
         "Non-Functional",
         "Partially Functional",
         "Under Maintenance",
+        "End of Life Span",
       ],
       default: "Functional",
     },
@@ -37,7 +45,7 @@ const EquipmentSchema: Schema = new Schema(
       default: "None",
     },
     maintenanceExpiry: {
-      type: Date,
+      type: String,
     },
     inchargeName: {
       type: String,
@@ -45,6 +53,7 @@ const EquipmentSchema: Schema = new Schema(
       default: "Not Assigned",
     },
     contactInfo: {
+      name: { type: String },
       phone: { type: String },
       email: { type: String },
     },

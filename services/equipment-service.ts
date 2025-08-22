@@ -12,7 +12,7 @@ class EquipmentService {
   }
 
   async getEquipmentById(id: string): Promise<EquipmentModel | null> {
-    return Equipment.findById(id)
+    return Equipment.findOne({ id })
   }
 
   async getAllEquipment(
@@ -38,14 +38,14 @@ class EquipmentService {
     id: string,
     updateData: mongoose.UpdateQuery<EquipmentModel>
   ): Promise<EquipmentModel | null> {
-    return Equipment.findByIdAndUpdate(id, updateData, {
+    return Equipment.findOneAndUpdate({ id }, updateData, {
       new: true,
       runValidators: true,
     })
   }
 
   async deleteEquipment(id: string): Promise<EquipmentModel | null> {
-    return Equipment.findByIdAndDelete(id)
+    return Equipment.findOneAndDelete({ id })
   }
 
   async getEquipmentByStatus(status: string): Promise<EquipmentModel[]> {

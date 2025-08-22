@@ -1,6 +1,13 @@
 import mongoose, { Schema } from "mongoose";
+import { v4 as uuidv4 } from "uuid";
 const EquipmentSchema = new Schema({
-    name: {
+    id: {
+        type: String,
+        default: () => uuidv4(),
+        required: true,
+        unique: true,
+    },
+    equipmentName: {
         type: String,
         required: [true, "Please add equipment name"],
     },
@@ -13,7 +20,7 @@ const EquipmentSchema = new Schema({
         required: [true, "Please add procurement year"],
     },
     installationDate: {
-        type: Date,
+        type: String,
         required: [true, "Please add installation date"],
     },
     status: {
@@ -24,6 +31,7 @@ const EquipmentSchema = new Schema({
             "Non-Functional",
             "Partially Functional",
             "Under Maintenance",
+            "End of Life Span",
         ],
         default: "Functional",
     },
@@ -34,7 +42,7 @@ const EquipmentSchema = new Schema({
         default: "None",
     },
     maintenanceExpiry: {
-        type: Date,
+        type: String,
     },
     inchargeName: {
         type: String,
@@ -42,6 +50,7 @@ const EquipmentSchema = new Schema({
         default: "Not Assigned",
     },
     contactInfo: {
+        name: { type: String },
         phone: { type: String },
         email: { type: String },
     },

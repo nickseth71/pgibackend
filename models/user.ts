@@ -4,39 +4,55 @@ import crypto from "crypto"
 import { v4 as uuidv4 } from "uuid"
 import type { UserModel } from "../interfaces/user-type.js"
 
-const UserSchema: Schema = new Schema({
-  name: {
-    type: String,
-    required: [true, "Please add a name"],
+const UserSchema: Schema = new Schema(
+  {
+    userId: {
+      type: String,
+      default: () => uuidv4(),
+      required: true,
+      unique: true,
+    },
+    name: {
+      type: String,
+      required: [true, "Please add a name"],
+    },
+    email: {
+      type: String,
+      required: [true, "Please add an email"],
+      trim: true,
+      lowercase: true,
+      match: [
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        "Please add a valid email",
+      ],
+    },
+    password: {
+      type: String,
+      required: [true, "Please add a password"],
+      minlength: 6,
+      select: false,
+    },
+    role: {
+      type: String,
+      enum: ["admin", "user", "technician"],
+      default: "user",
+    },
+    otp: String,
+    otpExpire: Date,
   },
-  email: {
-    type: String,
-    required: [true, "Please add an email"],
-    trim: true,
-    lowercase: true,
-    match: [
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      "Please add a valid email",
-    ],
-  },
-  password: {
-    type: String,
-    required: [true, "Please add a password"],
-    minlength: 6,
-    select: false,
-  },
-  role: {
-    type: String,
-    enum: ["admin", "user", "technician"],
-    default: "user",
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  otp: String,
-  otpExpire: Date,
-})
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+      transform: (_doc, ret: { __v?: any; _id?: any; userId?: any }) => {
+        delete ret.__v
+        delete ret._id
+        delete ret.userId
+        return ret
+      },
+    },
+  }
+)
 
 // Encrypt password using bcrypt
 UserSchema.pre<UserModel>("save", async function (next) {
@@ -72,26 +88,6 @@ UserSchema.methods.generateOTP = function () {
   this.otpExpire = Date.now() + 10 * 60 * 1000 // 10 minutes
   return this.otp
 }
-
-// Configure JSON serialization
-UserSchema.set("toJSON", {
-  virtuals: false,
-  versionKey: false,
-  transform: function (doc, ret) {
-    delete ret._id
-    delete ret.__v
-    delete ret.password
-  },
-})
-
-UserSchema.add({
-  id: {
-    type: String,
-    default: () => uuidv4(),
-    required: true,
-    unique: true,
-  },
-})
 
 // Create a compound index for email and role to ensure uniqueness for the combination
 UserSchema.index({ email: 1, role: 1 }, { unique: true })
