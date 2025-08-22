@@ -29,6 +29,8 @@ export const equipmentValidation = {
     }),
     inchargeName: Joi.string().required(),
     contactInfo: contactInfoSchema,
+    department: Joi.string().allow(null, ""),
+    remark: Joi.string().allow(null, ""),
   }),
 
   updateEquipment: Joi.object({

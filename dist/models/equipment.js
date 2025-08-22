@@ -54,6 +54,14 @@ const EquipmentSchema = new Schema({
         phone: { type: String },
         email: { type: String },
     },
+    department: {
+        type: String,
+        default: null,
+    },
+    remark: {
+        type: String,
+        default: null,
+    },
 }, {
     timestamps: true,
     toJSON: {

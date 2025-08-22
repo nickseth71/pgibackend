@@ -15,4 +15,6 @@ export interface EquipmentModel {
   }
   createdAt: string
   updatedAt: string | null
+  department: string | null
+  remark: string | null
 }
