@@ -44,10 +44,9 @@ const UserSchema: Schema = new Schema(
     timestamps: true,
     toJSON: {
       virtuals: true,
-      transform: (_doc, ret: { __v?: any; _id?: any; userId?: any }) => {
+      transform: (_doc, ret: { __v?: any; _id?: any}) => {
         delete ret.__v
         delete ret._id
-        delete ret.userId
         return ret
       },
     },
